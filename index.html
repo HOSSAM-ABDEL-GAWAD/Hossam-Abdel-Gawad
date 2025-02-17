@@ -6,10 +6,8 @@
     <title>Hossam Abdel Gawad</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
-    <!-- كود اللوجو في التاب -->
-    <link rel="icon" type="Untitled-1.png2.png" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        /* إعدادات عامة */
         * {
             margin: 0;
             padding: 0;
@@ -23,7 +21,6 @@
             direction: rtl;
         }
 
-        /* شريط التنقل */
         .navbar {
             display: flex;
             justify-content: center;
@@ -45,7 +42,6 @@
             transform: scale(1.1);
         }
 
-        /* الفيديوهات */
         .video-container {
             display: flex;
             flex-wrap: wrap;
@@ -59,12 +55,10 @@
             aspect-ratio: 16 / 9;
         }
 
-        /* دعم فيديوهات Shorts */
         .video-container iframe[shorts] {
             aspect-ratio: 9 / 16;
         }
 
-        /* تنسيق روابط السوشيال ميديا */
         .social-links {
             margin-top: 20px;
             display: flex;
@@ -82,7 +76,6 @@
         .social-links a:hover img {
             transform: rotate(10deg);
         }
-
     </style>
 </head>
 <body>
@@ -117,7 +110,7 @@
     <section id="myVideos">
         <h2>فيديوهاتي</h2>
         <div class="video-container" id="videoContainer">
-            <iframe src="https://www.youtube.com/embed/mygOKgWzEuY" frameborder="0" allowfullscreen></iframe>
+            <!-- يتم إضافة الفيديوهات هنا عبر JavaScript -->
         </div>
     </section>
 
@@ -142,35 +135,37 @@
         </div>
     </section>
 
-    <script>
-        function addVideo(url) {
-            let videoId;
-            if (url.includes("shorts/")) {
-                videoId = url.split("shorts/")[1].split("?")[0];
-            } else if (url.includes("v=")) {
-                videoId = url.split("v=")[1].split("&")[0];
-            }
-            
-            if (videoId) {
-                let embedUrl = `https://www.youtube.com/embed/${videoId}`;
-                let iframe = document.createElement("iframe");
-                iframe.src = embedUrl;
-                iframe.frameBorder = "0";
-                iframe.allowFullscreen = true;
-                iframe.style.aspectRatio = "16/9";
-                iframe.style.width = "100%";
-                iframe.style.maxWidth = "560px";
-                
-                document.getElementById("videoContainer").appendChild(iframe);
-            } else {
-                alert("الرجاء إدخال رابط يوتيوب صالح.");
-            }
-        }
-    </script>
-
     <footer>
         <p>&copy; 2025 جميع الحقوق محفوظة</p>
     </footer>
+
+    <script>
+        // إضافة الفيديوهات عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            const videoContainer = document.querySelector('#videoContainer');
+            const videoLinks = [
+                "https://www.youtube.com/embed/mygOKgWzEuY", // فيديو عادي
+                "https://www.youtube.com/embed/yXLr2PYYvZE", // فيديو عادي
+                "https://www.youtube.com/embed/1oOiG2Qrg7Y", // فيديو عادي
+                "https://www.youtube.com/shorts/z8E0vGJGO-Q"  // فيديو Shorts
+            ];
+
+            // إضافة الفيديوهات إلى الحاوية
+            videoLinks.forEach(link => {
+                const iframe = document.createElement('iframe');
+                if (link.includes('shorts/')) {
+                    const videoId = link.split('shorts/')[1];
+                    link = `https://www.youtube.com/embed/${videoId}`;
+                }
+                iframe.src = link;
+                iframe.frameBorder = "0";
+                iframe.allowFullscreen = true;
+                iframe.width = "560";
+                iframe.height = "315";
+                videoContainer.appendChild(iframe);
+            });
+        });
+    </script>
 
 </body>
 </html>

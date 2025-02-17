@@ -26,6 +26,11 @@ window.addEventListener('DOMContentLoaded', () => {
         storedVideos.forEach(video => {
             if (isValidURL(video)) {
                 const videoElement = document.createElement('iframe');
+                // التأكد من تحويل الرابط إلى شكل embed إذا كان من Shorts
+                if (video.includes('shorts/')) {
+                    const videoId = video.split('shorts/')[1];
+                    video = `https://www.youtube.com/embed/${videoId}`;
+                }
                 videoElement.src = video;
                 videoElement.width = "560";
                 videoElement.height = "315";
@@ -67,6 +72,13 @@ window.addEventListener('DOMContentLoaded', () => {
             
             if (isValidURL(videoLink)) {
                 let storedVideos = JSON.parse(localStorage.getItem('videoLinks')) || [];
+                
+                // تأكد من أن الفيديو يحتوي على رابط Embed إذا كان من Shorts
+                if (videoLink.includes('shorts/')) {
+                    const videoId = videoLink.split('shorts/')[1];
+                    videoLink = `https://www.youtube.com/embed/${videoId}`;
+                }
+                
                 storedVideos.push(videoLink);
                 localStorage.setItem('videoLinks', JSON.stringify(storedVideos));
                 displaySavedVideos();

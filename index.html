@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع حسام حسن</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* إعدادات عامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            direction: rtl;
+        }
+
+        /* شريط التنقل */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            background-color: #333;
+            padding: 15px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 15px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #ffcc00;
+            transform: scale(1.1);
+        }
+
+        /* الفيديوهات */
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .video-container iframe {
+            max-width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+        }
+
+        /* دعم فيديوهات Shorts */
+        .video-container iframe[shorts] {
+            aspect-ratio: 9 / 16;
+        }
+
+        /* تنسيق روابط السوشيال ميديا */
+        .social-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover img {
+            transform: rotate(10deg);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <a href="#home">الرئيسية</a>
+            <a href="#about">من أنا</a>
+            <a href="#myVideos">فيديوهاتي</a>
+            <a href="#myWorks">أعمالي</a>
+            <a href="#contact">اتصل بي</a>
+        </div>
+    </header>
+
+    <section id="home">
+        <div class="home-content">
+            <h1>أهلاً وسهلاً بك</h1>
+            <div class="image">
+                <img id="profileImage" src="Untitled-1.png2.png" alt="صورة حسام حسن" style="width: 300px; height: auto;">
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>من أنا</h2>
+        <p>أنا حسام حسن، عمري 22 سنة.<br>
+            طالب بكلية التجارة في جامعة بني سويف.<br>
+            لدي شغف بتطوير نفسي وتعلم مهارات جديدة، خاصة في تصوير الفيديو والمونتاج والتصميم.<br>
+            أحب مشاركة ما أتعلمه مع الآخرين وأسعى دائمًا لاكتساب المزيد من المعرفة والخبرة.</p>
+    </section>
+
+    <section id="myVideos">
+        <h2>فيديوهاتي</h2>
+        <div class="video-container" id="videoContainer">
+            <iframe src="https://www.youtube.com/embed/mygOKgWzEuY" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <section id="myWorks">
+        <h2>أعمالي</h2>
+        <div id="imageDisplay"></div>
+    </section>
+
+    <section id="contact">
+        <h2>اتصل بي</h2>
+        <p>يمكنك التواصل معي عبر البريد الإلكتروني: <a href="mailto:hh8500732@gmail.com" style="color:#ffcc00;">hh8500732@gmail.com</a></p>
+        <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=61556301363251" target="_blank">
+                <img src="facebook.png" alt="Facebook">
+            </a>
+            <a href="https://www.instagram.com/3bgwed/" target="_blank">
+                <img src="social.png" alt="Instagram">
+            </a>
+            <a href="https://www.youtube.com/@3bgwed2003" target="_blank">
+                <img src="music.png" alt="YouTube">
+            </a>
+        </div>
+    </section>
+
+    <script>
+        function addVideo(url) {
+            let videoId;
+            if (url.includes("shorts/")) {
+                videoId = url.split("shorts/")[1].split("?")[0];
+            } else if (url.includes("v=")) {
+                videoId = url.split("v=")[1].split("&")[0];
+            }
+            
+            if (videoId) {
+                let embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                let iframe = document.createElement("iframe");
+                iframe.src = embedUrl;
+                iframe.frameBorder = "0";
+                iframe.allowFullscreen = true;
+                iframe.style.aspectRatio = "16/9";
+                iframe.style.width = "100%";
+                iframe.style.maxWidth = "560px";
+                
+                document.getElementById("videoContainer").appendChild(iframe);
+            } else {
+                alert("الرجاء إدخال رابط يوتيوب صالح.");
+            }
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2025 جميع الحقوق محفوظة</p>
+    </footer>
+
+</body>
+</html>

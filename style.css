@@ -26,6 +26,7 @@ header {
     gap: 20px;
     background-color: #333;
     padding: 10px;
+    flex-wrap: wrap;
 }
 
 .navbar a {
@@ -33,6 +34,7 @@ header {
     text-decoration: none;
     font-size: 18px;
     transition: color 0.3s ease, transform 0.3s ease;
+    padding: 10px 15px;
 }
 
 .navbar a:hover {
@@ -56,6 +58,7 @@ h1, h2 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    margin-top: 20px;
 }
 
 .video-container iframe {
@@ -175,4 +178,91 @@ footer {
 /* تأثير عند تمرير الماوس */
 .social-links a:hover img {
     transform: rotate(10deg);
+}
+
+/* 📱 Media Queries - Responsive Design */
+
+/* شاشة أصغر من 1024px (تابلت، لابتوب صغير) */
+@media (max-width: 1024px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .navbar a {
+        font-size: 16px;
+        padding: 8px 10px;
+    }
+
+    .video-container iframe {
+        width: 100%;
+        height: 250px;
+    }
+
+    footer {
+        position: relative;
+        padding: 20px 0;
+    }
+}
+
+/* شاشة أصغر من 768px (تابلت، موبايل صغير) */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .navbar a {
+        font-size: 16px;
+        padding: 8px 10px;
+    }
+
+    .video-container iframe {
+        width: 100%;
+        height: 200px;
+    }
+
+    #imageDisplay img {
+        width: 80%;
+        height: auto;
+    }
+
+    footer {
+        position: relative;
+        padding: 20px 0;
+    }
+}
+
+/* شاشة أصغر من 480px (موبايل) */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .navbar a {
+        font-size: 14px;
+    }
+
+    .dashboard {
+        padding: 15px;
+    }
+
+    .social-links a {
+        width: 45px;
+        height: 45px;
+    }
+
+    .social-links a img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .video-container iframe {
+        width: 100%;
+        height: 180px;
+    }
 }

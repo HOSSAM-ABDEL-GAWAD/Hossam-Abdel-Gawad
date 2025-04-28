@@ -1,9 +1,23 @@
 window.addEventListener('DOMContentLoaded', () => {
+    // عنصر لعرض الفيديوهات والصور
     const videoDisplay = document.querySelector('#videoDisplay');
     const imageDisplay = document.querySelector('#imageDisplay');
     const videoForm = document.querySelector('#videoForm');
     const imageForm = document.querySelector('#imageForm');
 
+    // إضافة عداد الزوار
+    let visitorCount = localStorage.getItem('visitorCount');
+    
+    if (!visitorCount) {
+        visitorCount = 1;
+    } else {
+        visitorCount = parseInt(visitorCount) + 1;
+    }
+
+    localStorage.setItem('visitorCount', visitorCount);
+    document.getElementById('visitorCount').textContent = `عدد الزوار: ${visitorCount}`;
+
+    // دالة لعرض روابط الوسائل الاجتماعية
     function displaySocialLinks() {
         const socialLinksDisplay = document.querySelector('#socialLinksDisplay');
         socialLinksDisplay.innerHTML = `
@@ -19,6 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    // دالة لعرض الفيديوهات المخزنة
     function displaySavedVideos() {
         const storedVideos = JSON.parse(localStorage.getItem('videoLinks')) || [];
         videoDisplay.innerHTML = '';
@@ -42,6 +57,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // دالة لعرض الصور المخزنة
     function displaySavedImages() {
         const storedImages = JSON.parse(localStorage.getItem('imageLinks')) || [];
         imageDisplay.innerHTML = '';
@@ -59,11 +75,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // دالة للتحقق من صحة الرابط
     function isValidURL(url) {
         const pattern = /^https?:\/\/[a-zA-Z0-9.-]+(?:\/[^\s]*)?$/;
         return pattern.test(url);
     }
 
+    // التعامل مع إضافة الفيديو
     if (videoForm) {
         videoForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -90,6 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // التعامل مع إضافة الصور
     if (imageForm) {
         imageForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -109,6 +128,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // عرض الروابط الاجتماعية والفيديوهات والصور
     displaySocialLinks();
     displaySavedVideos();
     displaySavedImages();

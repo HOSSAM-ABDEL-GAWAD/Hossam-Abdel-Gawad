@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
+<html lang="ar" class="trancy-und"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hossam Abdel Gawad</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <script src="script.js" defer=""></script>
     <link rel="icon" type="image/png" href="اعمالي/hossam-abdel_gawx-hossam-log.jpg">
     
     <!-- مكتبة AOS للأنيميشن -->
@@ -26,6 +24,25 @@
             direction: rtl;
             line-height: 1.6;
         }
+        
+        .cv-download {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .cv-download a {
+      background-color: #00bcd4;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .cv-download a:hover {
+      background-color: #008c9e;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
 
         .navbar {
             display: flex;
@@ -203,8 +220,8 @@
         }
 
     </style>
-</head>
-<body>
+<style>.lottie-animation-container{width:var(--lottie-animation-container-width);height:var(--lottie-animation-container-height);background-color:var(--lottie-animation-container-background-color);overflow:hidden;margin:var(--lottie-animation-margin)}.lottie-animation-container svg{transform:scale(var(--lottie-animation-scale))}</style><style>.lottie-animation-container{width:var(--lottie-animation-container-width);height:var(--lottie-animation-container-height);background-color:var(--lottie-animation-container-background-color);overflow:hidden;margin:var(--lottie-animation-margin)}.lottie-animation-container svg{transform:scale(var(--lottie-animation-scale))}</style></head>
+<body data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0">
 
     <header>
         <div class="navbar">
@@ -218,14 +235,14 @@
         </div>
     </header>
 
-    <section id="home" data-aos="fade-up">
+    <section id="home" data-aos="fade-up" class="aos-init aos-animate">
         <div class="home-content">
             <h1>Welcome</h1>
             <img id="profileImage" src="Untitled-1.png.png" alt="صورة حسام حسن" style="width: 300px; height: auto;">
         </div>
     </section>
 
-    <section id="about" data-aos="fade-up">
+    <section id="about" data-aos="fade-up" class="aos-init aos-animate">
         <h2>من أنا</h2>
         <h3>I'm Hossam Hassan</h3>
         <p>a student at the Faculty of Commerce at Beni Suef University.</p>
@@ -233,28 +250,40 @@
         <p>I hold an MOS Master certificate in Microsoft Office, enhancing my data analysis skills.</p>
         <p>I also write content and work on improving my HTML skills.</p>
         <p>I'm passionate about learning and sharing knowledge.</p>
+        <div class="cv-download">
+            <a style="background-color: rgb(0, 0, 0);box-shadow: 0 0 20px #ffcc00;font-style: normal; color: antiquewhite;transition: transform 0.3s;" href="ملفات/HOSSAM HASSAN (1).docx" download>تحميل السيرة الذاتية (PDF)</a>
+          </div>
     </section>
 
-    <section id="myVideos" data-aos="fade-up">
+    <section id="myVideos" data-aos="fade-up" class="aos-init aos-animate">
         <h2>فيديوهاتي</h2>
         <div class="video-container" id="videoContainer">
             <!-- الفيديوهات يتم اضافتها بالجافاسكريبت -->
-        </div>
+        <iframe src="https://www.youtube.com/embed/mygOKgWzEuY" frameborder="0" allowfullscreen="" width="560" height="315"></iframe><iframe src="https://www.youtube.com/embed/yXLr2PYYvZE" frameborder="0" allowfullscreen="" width="560" height="315"></iframe><iframe src="https://www.youtube.com/embed/1oOiG2Qrg7Y" frameborder="0" allowfullscreen="" width="560" height="315"></iframe><iframe class="shorts" src="https://www.youtube.com/embed/z8E0vGJGO-Q" frameborder="0" allowfullscreen="" width="560" height="315"></iframe></div>
     </section>
 
-    <section id="myWorks" data-aos="fade-up">
+    <section id="myWorks" data-aos="fade-up" class="aos-init aos-animate">
         <h2>أعمالي</h2>
         <div id="imageDisplay">
             <!-- صورك و اعمالك هنا -->
             <img width="49%" src="اعمالي/nour.jpg" alt="">
             <img width="49%" src="اعمالي/shoes.jpg" alt="">
-            <video src="اعمالي/تعديل تاني_1.mp4" width="49%" height="480" controls></video>
-            <img width="49%" src="اعمالي/hossam taxt.jpg" alt="">
+            <img width="49%" src="اعمالي/العالم من شاشة.jpg" alt="">
+            <img width="49%" src="اعمالي/عرض.jpg" alt="">
+            <img width="49%" src="اعمالي/hossam bdoy2.jpg" alt="">
+            <img width="49%" src="اعمالي/hossam bdoy1.jpg" alt="">
+            <img width="49%" src="اعمالي/photo_2025-05-08_10-11-41.jpg" alt="">
+            <img width="49%" src="اعمالي/photo_2025-05-08_10-12-23.jpg" alt="">
+          <a> <img width="99%" src="اعمالي/hossam taxt.jpg" alt=""></a> 
+          <img width="49%" src="اعمالي/1.1.jpg" alt="">
+          <img width="49%" src="اعمالي/2.1.jpg" alt="">
+          <img width="49%" src="اعمالي/1.2.jpg" alt="">
+          <img width="49%" src="اعمالي/2.2.jpg" alt="">
             <!-- يمكنك تكمل باقي الصور بنفس الطريقة -->
         </div>
     </section>
 
-    <section id="Certificates" data-aos="fade-up">
+    <section id="Certificates" data-aos="fade-up" class="aos-init aos-animate">
         <h2>الشهادات</h2>
         <div class="certificate-links">
             <a class="certificate-link" target="_blank" href="https://drive.google.com/file/d/1hiKbUNzPDkijNq0uGnvULbRdv9Ffzh4o/view?usp=drive_link">اساسيات التحريك</a>
@@ -262,15 +291,15 @@
         </div>
     </section>
 
-    <section id="excelFiles" data-aos="fade-up">
+    <section id="excelFiles" data-aos="fade-up" class="aos-init aos-animate">
         <h2>ملفات Excel</h2>
         <div class="excel-links">
-            <a target="_blank" href="https://docs.google.com/spreadsheets/d/1XLoyIxpLc5vfWqRoq1nLNCM0rE-MxJ6d/edit?usp=drive_link&ouid=102591328994987386421&rtpof=true&sd=true">ملف Excel الأول</a>
-            <a target="_blank" href="https://docs.google.com/spreadsheets/d/1aOm29ERrRHu64zfzZO_a_qZwU2vW1_ZU/edit?usp=drive_link&ouid=102591328994987386421&rtpof=true&sd=true">ملف Excel الثاني</a>
+            <a target="_blank" href="https://docs.google.com/spreadsheets/d/1XLoyIxpLc5vfWqRoq1nLNCM0rE-MxJ6d/edit?usp=drive_link&amp;ouid=102591328994987386421&amp;rtpof=true&amp;sd=true">ملف Excel الأول</a>
+            <a target="_blank" href="https://docs.google.com/spreadsheets/d/1aOm29ERrRHu64zfzZO_a_qZwU2vW1_ZU/edit?usp=drive_link&amp;ouid=102591328994987386421&amp;rtpof=true&amp;sd=true">ملف Excel الثاني</a>
         </div>
     </section>
 
-    <section id="contact" data-aos="fade-up">
+    <section id="contact" data-aos="fade-up" class="aos-init aos-animate">
         <h2>اتصل بي</h2>
         <p>يمكنك التواصل عبر البريد: <a href="mailto:hh8500732@gmail.com" style="color:#ffcc00;">hh8500732@gmail.com</a></p>
         <div class="social-links">
@@ -287,7 +316,7 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 جميع الحقوق محفوظة لـ حسام حسن</p>
+        <p>© 2025 جميع الحقوق محفوظة لـ حسام حسن</p>
     </footer>
 
     <!-- مكتبة AOS -->
@@ -323,6 +352,4 @@
             });
         });
     </script>
-
-</body>
 </html>

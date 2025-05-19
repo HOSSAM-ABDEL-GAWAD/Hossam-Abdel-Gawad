@@ -1,135 +1,121 @@
-window.addEventListener('DOMContentLoaded', () => {
-    // عنصر لعرض الفيديوهات والصور
-    const videoDisplay = document.querySelector('#videoDisplay');
-    const imageDisplay = document.querySelector('#imageDisplay');
-    const videoForm = document.querySelector('#videoForm');
-    const imageForm = document.querySelector('#imageForm');
+// تهيئة مكتبة AOS للحركات
+AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true,
+    offset: 120
+});
 
-    // إضافة عداد الزوار
-    let visitorCount = localStorage.getItem('visitorCount');
-    
-    if (!visitorCount) {
-        visitorCount = 1;
+// تهيئة Lightbox
+lightbox.option({
+    'resizeDuration': 200,
+    'wrapAround': true,
+    'showImageNumberLabel': true,
+    'positionFromTop': 100,
+    'disableScrolling': true,
+    'albumLabel': 'صورة %1 من %2',
+    'fadeDuration': 300
+});
+
+// تغيير لون الشريط العلوي عند التمرير
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 100) {
+        navbar.style.backgroundColor = 'rgba(44, 62, 80, 0.97)';
+        navbar.style.padding = '0.8rem 0';
+        navbar.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
     } else {
-        visitorCount = parseInt(visitorCount) + 1;
+        navbar.style.backgroundColor = '#2c3e50';
+        navbar.style.padding = '1rem 0';
+        navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
     }
+});
 
-    localStorage.setItem('visitorCount', visitorCount);
-    document.getElementById('visitorCount').textContent = `عدد الزوار: ${visitorCount}`;
-
-    // دالة لعرض روابط الوسائل الاجتماعية
-    function displaySocialLinks() {
-        const socialLinksDisplay = document.querySelector('#socialLinksDisplay');
-        socialLinksDisplay.innerHTML = `
-            <a href="https://www.facebook.com/profile.php?id=61556301363251" target="_blank">
-                <img src="facebook-icon.png" alt="Facebook" width="40">
-            </a>
-            <a href="https://www.instagram.com/3bgwed/" target="_blank">
-                <img src="instagram-icon.png" alt="Instagram" width="40">
-            </a>
-            <a href="https://www.youtube.com/@3bgwed2003" target="_blank">
-                <img src="youtube-icon.png" alt="YouTube" width="40">
-            </a>
-        `;
-    }
-
-    // دالة لعرض الفيديوهات المخزنة
-    function displaySavedVideos() {
-        const storedVideos = JSON.parse(localStorage.getItem('videoLinks')) || [];
-        videoDisplay.innerHTML = '';
-
-        storedVideos.forEach(video => {
-            if (isValidURL(video)) {
-                const videoElement = document.createElement('iframe');
-                // التأكد من تحويل الرابط إلى شكل embed إذا كان من Shorts
-                if (video.includes('shorts/')) {
-                    const videoId = video.split('shorts/')[1];
-                    video = `https://www.youtube.com/embed/${videoId}`;
-                }
-                videoElement.src = video;
-                videoElement.width = "560";
-                videoElement.height = "315";
-                videoElement.frameBorder = "0";
-                videoElement.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
-                videoElement.allowFullscreen = true;
-                videoDisplay.appendChild(videoElement);
-            }
-        });
-    }
-
-    // دالة لعرض الصور المخزنة
-    function displaySavedImages() {
-        const storedImages = JSON.parse(localStorage.getItem('imageLinks')) || [];
-        imageDisplay.innerHTML = '';
-
-        storedImages.forEach(image => {
-            if (isValidURL(image)) {
-                const imgElement = document.createElement('img');
-                imgElement.src = image;
-                imgElement.alt = 'My Work';
-                imgElement.style.width = "300px";
-                imgElement.style.height = "auto";
-                imgElement.style.margin = "10px";
-                imageDisplay.appendChild(imgElement);
-            }
-        });
-    }
-
-    // دالة للتحقق من صحة الرابط
-    function isValidURL(url) {
-        const pattern = /^https?:\/\/[a-zA-Z0-9.-]+(?:\/[^\s]*)?$/;
-        return pattern.test(url);
-    }
-
-    // التعامل مع إضافة الفيديو
-    if (videoForm) {
-        videoForm.addEventListener('submit', (e) => {
+// التنقل السلس بين الأقسام
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        if (this.getAttribute('href') !== '#') {
             e.preventDefault();
-            const videoInput = document.querySelector('#video');
-            const videoLink = videoInput.value.trim();
             
-            if (isValidURL(videoLink)) {
-                let storedVideos = JSON.parse(localStorage.getItem('videoLinks')) || [];
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
                 
-                // تأكد من أن الفيديو يحتوي على رابط Embed إذا كان من Shorts
-                if (videoLink.includes('shorts/')) {
-                    const videoId = videoLink.split('shorts/')[1];
-                    videoLink = `https://www.youtube.com/embed/${videoId}`;
-                }
+                // تحديث الرابط النشط
+                document.querySelectorAll('.navbar a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            }
+        }
+    });
+});
+
+// تحميل الصور بسلاسة
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.5s ease';
                 
-                storedVideos.push(videoLink);
-                localStorage.setItem('videoLinks', JSON.stringify(storedVideos));
-                displaySavedVideos();
-                alert('تم إضافة الفيديو بنجاح!');
-                videoInput.value = '';
-            } else {
-                alert('يرجى إدخال رابط فيديو صحيح!');
+                setTimeout(() => {
+                    img.style.opacity = '1';
+                }, 100);
+                
+                observer.unobserve(img);
             }
         });
-    }
+    }, { threshold: 0.1 });
+    
+    images.forEach(img => {
+        imageObserver.observe(img);
+    });
+});
 
-    // التعامل مع إضافة الصور
-    if (imageForm) {
-        imageForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const imageInput = document.querySelector('#image');
-            const imageLink = imageInput.value.trim();
-            
-            if (isValidURL(imageLink)) {
-                let storedImages = JSON.parse(localStorage.getItem('imageLinks')) || [];
-                storedImages.push(imageLink);
-                localStorage.setItem('imageLinks', JSON.stringify(storedImages));
-                displaySavedImages();
-                alert('تم إضافة الصورة بنجاح!');
-                imageInput.value = '';
-            } else {
-                alert('يرجى إدخال رابط صورة صحيح!');
-            }
-        });
-    }
+// إضافة تاريخ حقوق النشر تلقائياً
+document.addEventListener('DOMContentLoaded', function() {
+    const footer = document.createElement('footer');
+    footer.style.textAlign = 'center';
+    footer.style.padding = '20px';
+    footer.style.backgroundColor = '#2c3e50';
+    footer.style.color = 'white';
+    footer.innerHTML = `
+        <p>جميع الحقوق محفوظة &copy; <span id="year"></span> - حسام حسن | <a href="mailto:hh8500732@gmail.com">اتصل بي</a></p>
+    `;
+    document.body.appendChild(footer);
+    
+    document.getElementById('year').textContent = new Date().getFullYear();
+});
 
-    // عرض الروابط الاجتماعية والفيديوهات والصور
-    displaySocialLinks();
-    displaySavedVideos();
-    displaySavedImages();
+// تحديث الرابط النشط عند التمرير
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.navbar a');
+    
+    let current = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (pageYOffset >= (sectionTop - 100)) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
 });

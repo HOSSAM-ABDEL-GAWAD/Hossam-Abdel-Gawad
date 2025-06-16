@@ -3,7 +3,10 @@ AOS.init({
     duration: 800,
     easing: 'ease-in-out',
     once: true,
-    offset: 120
+    offset: 120,
+    disable: function() {
+        return window.innerWidth < 768;
+    }
 });
 
 // تهيئة Lightbox
@@ -14,7 +17,25 @@ lightbox.option({
     'positionFromTop': 100,
     'disableScrolling': true,
     'albumLabel': 'صورة %1 من %2',
-    'fadeDuration': 300
+    'fadeDuration': 300,
+    'alwaysShowNavOnTouchDevices': true
+});
+
+// القائمة المتنقلة للهواتف
+const mobileMenu = document.getElementById('mobile-menu');
+const navLinks = document.getElementById('nav-links');
+
+mobileMenu.addEventListener('click', function() {
+    this.classList.toggle('active');
+    navLinks.classList.toggle('active');
+});
+
+// إغلاق القائمة عند النقر على رابط
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        navLinks.classList.remove('active');
+    });
 });
 
 // تغيير لون الشريط العلوي عند التمرير
@@ -119,21 +140,17 @@ window.addEventListener('scroll', function() {
         }
     });
 });
-document.addEventListener('DOMContentLoaded', function() {
-    const mobileMenu = document.getElementById('mobile-menu');
-    const navLinks = document.getElementById('nav-links');
+
+// تعديل حجم الفيديوهات حسب حجم الشاشة
+function adjustVideos() {
+    const videos = document.querySelectorAll('.video-item iframe');
+    const isMobile = window.innerWidth < 768;
     
-    mobileMenu.addEventListener('click', function() {
-        this.classList.toggle('active');
-        navLinks.classList.toggle('active');
+    videos.forEach(video => {
+        video.style.width = '100%';
+        video.style.height = isMobile ? '200px' : '315px';
     });
-    
-    // إغلاق القائمة عند النقر على رابط
-    const navItems = document.querySelectorAll('.nav-links a');
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            mobileMenu.classList.remove('active');
-            navLinks.classList.remove('active');
-        });
-    });
-});
+}
+
+window.addEventListener('resize', adjustVideos);
+window.addEventListener('load', adjustVideos);

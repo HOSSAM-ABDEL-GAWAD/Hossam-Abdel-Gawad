@@ -9,6 +9,56 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="اعمالي/hossam-abdel_gawx-hossam-log.jpg">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* تنسيق أيقونة الواتساب المحدثة */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            z-index: 9999;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            text-decoration: none;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
+        }
+        
+        .whatsapp-float img {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                left: 20px;
+            }
+            .whatsapp-float img {
+                width: 26px;
+                height: 26px;
+            }
+        }
+    </style>
 </head>
 <body data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0">
 

@@ -3,7 +3,7 @@
 // ضعه في index.html قبل </body> مباشرة داخل <script></script>
 // ============================================================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwm36JYnN1GKkYzTpwjESliLCOySM6VB5ot_uJ8N2tNUL85sOkB3gbdgWtOHvxyr0ce_g/exec";
+const API_URL = "";
 
 // --- تحميل وعرض الفيديوهات ---
 async function loadVideos() {

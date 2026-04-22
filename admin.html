@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم - حسام عبدالجواد</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --primary: #2c3e50;
+  --accent: #3498db;
+  --success: #27ae60;
+  --danger: #e74c3c;
+  --warning: #f39c12;
+  --bg: #f0f4f8;
+  --card: #ffffff;
+  --text: #2c3e50;
+  --muted: #7f8c8d;
+  --border: #e0e6ed;
+  --sidebar-w: 260px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+  min-height: 100vh;
+}
+
+/* Layout */
+.layout { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--primary);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; right: 0;
+  height: 100vh;
+  z-index: 100;
+  transition: transform 0.3s;
+}
+
+.sidebar-logo {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 42px; height: 42px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.logo-text { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+.logo-sub { font-size: 0.75rem; opacity: 0.6; }
+
+.sidebar-nav { padding: 1rem 0; flex: 1; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-right: 3px solid transparent;
+  font-size: 0.95rem;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.08); }
+.nav-item.active { background: rgba(52,152,219,0.2); border-right-color: var(--accent); color: #74b9ff; }
+.nav-item i { width: 20px; text-align: center; font-size: 1rem; }
+
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
+
+/* Main */
+.main { margin-right: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; }
+
+/* Topbar */
+.topbar {
+  background: white;
+  padding: 1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50;
+}
+
+.topbar-title { font-size: 1.2rem; font-weight: 700; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: #2980b9; }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #229954; }
+.btn-danger { background: var(--danger); color: white; font-size: 0.8rem; padding: 0.3rem 0.7rem; }
+.btn-danger:hover { background: #c0392b; }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { background: var(--bg); }
+.btn-sm { padding: 0.3rem 0.8rem; font-size: 0.8rem; }
+
+/* Content */
+.content { padding: 2rem; flex: 1; }
+
+/* Sections */
+.section { display: none; }
+.section.active { display: block; }
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; gap: 1rem;
+}
+
+.stat-icon {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+}
+
+.stat-icon.blue { background: #ebf5fb; color: var(--accent); }
+.stat-icon.green { background: #eafaf1; color: var(--success); }
+.stat-icon.orange { background: #fef9e7; color: var(--warning); }
+.stat-icon.red { background: #fdedec; color: var(--danger); }
+
+.stat-val { font-size: 1.6rem; font-weight: 700; line-height: 1; }
+.stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+/* Card */
+.card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.card-title { font-size: 1rem; font-weight: 700; }
+.card-body { padding: 1.5rem; }
+
+/* Table */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: right; padding: 0.75rem 1rem;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #fafbfc; }
+
+/* Badge */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem; font-weight: 500;
+}
+.badge-blue { background: #ebf5fb; color: #2980b9; }
+.badge-green { background: #eafaf1; color: #229954; }
+.badge-orange { background: #fef9e7; color: #d35400; }
+.badge-red { background: #fdedec; color: #c0392b; }
+
+/* Form */
+.form-group { margin-bottom: 1.2rem; }
+.form-label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: var(--text); }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: white;
+  transition: border-color 0.2s;
+  direction: rtl;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+}
+.form-textarea { resize: vertical; min-height: 80px; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* Color picker */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.color-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.color-item label { font-size: 0.85rem; flex: 1; }
+.color-item input[type="color"] {
+  width: 36px; height: 36px;
+  border: none; border-radius: 6px;
+  cursor: pointer; padding: 0;
+}
+
+/* Section Preview */
+.section-order {
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.section-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: grab;
+}
+
+.section-row:active { cursor: grabbing; }
+.drag-handle { color: var(--muted); font-size: 0.9rem; }
+.section-row .name { flex: 1; font-size: 0.9rem; }
+.section-row .toggle { cursor: pointer; }
+
+/* Alert */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  display: none;
+}
+.alert-success { background: #eafaf1; color: #1e8449; border: 1px solid #abebc6; display: flex; align-items: center; gap: 8px; }
+.alert-info { background: #ebf5fb; color: #1a5276; border: 1px solid #aed6f1; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  background: #2c3e50; color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  z-index: 9999;
+  opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+
+/* Setup guide */
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li {
+  counter-increment: steps;
+  display: flex; gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.step-list li:last-child { border-bottom: none; }
+.step-num {
+  width: 28px; height: 28px; min-width: 28px;
+  background: var(--accent); color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700;
+  margin-top: 2px;
+}
+.step-content h4 { font-size: 0.95rem; margin-bottom: 4px; }
+.step-content p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+.step-content code {
+  background: var(--bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #c0392b;
+  font-family: monospace;
+  direction: ltr;
+  display: inline-block;
+}
+
+.code-block {
+  background: #1a252f;
+  color: #ecf0f1;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  line-height: 1.8;
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+/* Mobile hamburger */
+.hamburger {
+  display: none;
+  background: none; border: none; cursor: pointer;
+  font-size: 1.3rem; color: var(--text);
+}
+
+.overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 99;
+}
+
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-right: 0; }
+  .hamburger { display: block; }
+  .overlay.show { display: block; }
+  .form-grid { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .content { padding: 1rem; }
+}
+
+/* Data source indicator */
+.ds-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  background: #eafaf1; color: #229954;
+  border: 1px solid #abebc6;
+}
+.ds-dot { width: 7px; height: 7px; border-radius: 50%; background: #27ae60; animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="toast" id="toast"></div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">ح</div>
+      <div>
+        <div class="logo-text">لوحة التحكم</div>
+        <div class="logo-sub">حسام عبدالجواد</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showSection('overview')">
+        <i class="fas fa-home"></i> نظرة عامة
+      </div>
+      <div class="nav-item" onclick="showSection('videos')">
+        <i class="fas fa-video"></i> الفيديوهات
+      </div>
+      <div class="nav-item" onclick="showSection('certificates')">
+        <i class="fas fa-certificate"></i> الشهادات
+      </div>
+      <div class="nav-item" onclick="showSection('theme')">
+        <i class="fas fa-palette"></i> الألوان والهوية
+      </div>
+      <div class="nav-item" onclick="showSection('sections')">
+        <i class="fas fa-layer-group"></i> ترتيب الأقسام
+      </div>
+      <div class="nav-item" onclick="showSection('setup')">
+        <i class="fas fa-cog"></i> إعداد Google Sheets
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      الإصدار 1.0 &bull; موقع حسام
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <span class="topbar-title" id="page-title">نظرة عامة</span>
+      </div>
+      <div class="topbar-right">
+        <div class="ds-badge" id="ds-indicator">
+          <div class="ds-dot"></div>
+          <span id="ds-label">بيانات محلية</span>
+        </div>
+        <button class="btn btn-primary" onclick="saveAll()">
+          <i class="fas fa-save"></i> حفظ التغييرات
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Overview -->
+      <div class="section active" id="sec-overview">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-video"></i></div>
+            <div>
+              <div class="stat-val" id="stat-videos">0</div>
+              <div class="stat-label">فيديو</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-certificate"></i></div>
+            <div>
+              <div class="stat-val" id="stat-certs">0</div>
+              <div class="stat-label">شهادة</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-layer-group"></i></div>
+            <div>
+              <div class="stat-val" id="stat-sections">6</div>
+              <div class="stat-label">قسم</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">مرحباً بك في لوحة التحكم</span>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-success" style="display:flex">
+              <i class="fas fa-check-circle"></i>
+              <span>لوحة التحكم تعمل بنجاح! يمكنك الآن إدارة محتوى موقعك بسهولة.</span>
+            </div>
+            <p style="color:var(--muted);font-size:0.9rem;line-height:1.8">
+              استخدم القائمة الجانبية للتنقل بين الأقسام. جميع التغييرات تُحفظ محلياً في <strong>localStorage</strong> أولاً،
+              ثم يمكنك ربطها بـ <strong>Google Sheets</strong> من خلال إعداد الـ API Script المشروح في قسم الإعداد.
+            </p>
+            <div style="margin-top:1rem;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-outline" onclick="showSection('videos')"><i class="fas fa-video"></i> إضافة فيديو</button>
+              <button class="btn btn-outline" onclick="showSection('certificates')"><i class="fas fa-certificate"></i> إضافة شهادة</button>
+              <button class="btn btn-outline" onclick="showSection('setup')"><i class="fas fa-cog"></i> إعداد Google Sheets</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Videos -->
+      <div class="section" id="sec-videos">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">إضافة فيديو جديد</span>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">عنوان الفيديو</label>
+                <input type="text" class="form-input" id="v-title" placeholder="مثال: أساسيات الفوتوشوب">
+              </div>
+              <div class="form-group">
+                <label class="form-label">نوع الفيديو</label>
+                <select class="form-select" id="v-type">
+                  <option value="normal">فيديو عادي (16:9)</option>
+                  <option value="short">فيديو قصير - Shorts (9:16)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">رابط يوتيوب أو YouTube ID</label>
+              <input type="text" class="form-input" id="v-url" placeholder="مثال: Ye7b_9H83wA  أو  https://youtu.be/Ye7b_9H83wA">
+            </div>
+            <div class="form-group">
+              <label class="form-label">وصف قصير</label>
+              <input type="text" class="form-input" id="v-desc" placeholder="مثال: درس شامل للمبتدئين">
+            </div>
+            <button class="btn btn-success" onclick="addVideo()">
+              <i class="fas fa-plus"></i> إضافة الفيديو
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">قائمة الفيديوهات</span>
+            <span class="badge badge-blue" id="video-count">0 فيديو</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>العنوان</th>
+                  <th>النوع</th>
+                  <th>رابط يوتيوب</th>
+                  <th>الوصف</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="videos-tbody">
+                <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">لا توجد فيديوهات بعد</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certificates -->
+      <div class="section" id="sec-certificates">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">إضافة شهادة جديدة</span>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">اسم الشهادة</label>
+                <input type="text" class="form-input" id="c-title" placeholder="مثال: MOS Master">
+              </div>
+              <div class="form-group">
+                <label class="form-label">الجهة المانحة</label>
+                <input type="text" class="form-input" id="c-org" placeholder="مثال: Microsoft">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">وصف الشهادة</label>
+              <textarea class="form-textarea" id="c-desc" placeholder="اكتب وصفاً للشهادة..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">رابط الشهادة (اختياري)</label>
+              <input type="text" class="form-input" id="c-link" placeholder="https://...">
+            </div>
+            <button class="btn btn-success" onclick="addCert()">
+              <i class="fas fa-plus"></i> إضافة الشهادة
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">قائمة الشهادات</span>
+            <span class="badge badge-green" id="cert-count">0 شهادة</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>الاسم</th>
+                  <th>الجهة</th>
+                  <th>الوصف</th>
+                  <th>الرابط</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="certs-tbody">
+                <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">لا توجد شهادات بعد</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme -->
+      <div class="section" id="sec-theme">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">الهوية البصرية والألوان</span>
+          </div>
+          <div class="card-body">
+            <div class="color-grid">
+              <div class="color-item">
+                <label>لون الشريط العلوي</label>
+                <input type="color" id="clr-navbar" value="#2c3e50" onchange="previewColors()">
+              </div>
+              <div class="color-item">
+                <label>اللون الرئيسي</label>
+                <input type="color" id="clr-primary" value="#3498db" onchange="previewColors()">
+              </div>
+              <div class="color-item">
+                <label>لون خلفية الصفحة</label>
+                <input type="color" id="clr-bg" value="#f9f9f9" onchange="previewColors()">
+              </div>
+              <div class="color-item">
+                <label>لون النصوص</label>
+                <input type="color" id="clr-text" value="#039991" onchange="previewColors()">
+              </div>
+              <div class="color-item">
+                <label>لون العناوين</label>
+                <input type="color" id="clr-headings" value="#2c3e50" onchange="previewColors()">
+              </div>
+            </div>
+
+            <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+              <h4 style="margin-bottom:1rem;font-size:0.95rem">معاينة الألوان</h4>
+              <div id="color-preview" style="padding:1rem;border-radius:8px;border:1px solid var(--border)">
+                <div id="prev-navbar" style="padding:0.75rem 1rem;border-radius:6px;color:white;margin-bottom:8px;background:#2c3e50;font-size:0.9rem">شريط التنقل العلوي</div>
+                <div id="prev-btn" style="display:inline-block;padding:0.5rem 1.2rem;border-radius:6px;color:white;background:#3498db;font-size:0.9rem;margin-bottom:8px">زر رئيسي</div>
+                <div id="prev-text" style="color:#039991;font-size:0.9rem">نص عينة — حسام عبدالجواد مصمم جرافيك</div>
+              </div>
+            </div>
+
+            <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+              <h4 style="margin-bottom:0.5rem;font-size:0.95rem">كود CSS المُولَّد</h4>
+              <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.75rem">انسخ هذا الكود والصقه في ملف style.css الخاص بموقعك</p>
+              <div class="code-block" id="generated-css">/* انقر "معاينة" لتوليد الكود */</div>
+              <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="copyCss()">
+                <i class="fas fa-copy"></i> نسخ الكود
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sections order -->
+      <div class="section" id="sec-sections">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">ترتيب أقسام الموقع وإظهارها</span>
+          </div>
+          <div class="card-body">
+            <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem">
+              <i class="fas fa-info-circle"></i> اسحب الأقسام لإعادة ترتيبها، أو أخفِها بالضغط على الزر.
+            </p>
+            <div class="section-order" id="sections-list">
+              <!-- populated by JS -->
+            </div>
+            <div style="margin-top:1rem">
+              <button class="btn btn-primary" onclick="saveSections()">
+                <i class="fas fa-save"></i> حفظ الترتيب
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">كود HTML المُولَّد للتنقل</span>
+          </div>
+          <div class="card-body">
+            <div class="code-block" id="nav-code"><!-- سيظهر هنا --></div>
+            <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="copyNav()">
+              <i class="fas fa-copy"></i> نسخ الكود
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Setup -->
+      <div class="section" id="sec-setup">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title"><i class="fab fa-google" style="color:#4285f4"></i> ربط الموقع بـ Google Sheets</span>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-info" style="display:flex;align-items:flex-start;gap:8px">
+              <i class="fas fa-lightbulb" style="color:#1a5276;margin-top:2px"></i>
+              <span>هذه الطريقة <strong>مجانية 100%</strong> ولا تحتاج لأي سيرفر. البيانات تُخزَّن في Google Sheets وتُقرأ تلقائياً من الموقع.</span>
+            </div>
+            <ul class="step-list">
+              <li>
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <h4>إنشاء Google Sheet</h4>
+                  <p>اذهب إلى <a href="https://sheets.google.com" target="_blank" style="color:var(--accent)">sheets.google.com</a> وأنشئ ورقة جديدة باسم "HossamSite". أنشئ ورقتين بداخلها: <code>Videos</code> و <code>Certificates</code></p>
+                </div>
+              </li>
+              <li>
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <h4>تنسيق ورقة الفيديوهات</h4>
+                  <p>في ورقة <code>Videos</code> أضف هذه الترويسات في الصف الأول:</p>
+                  <div class="code-block">title | type | videoId | description</div>
+                </div>
+              </li>
+              <li>
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <h4>تنسيق ورقة الشهادات</h4>
+                  <p>في ورقة <code>Certificates</code> أضف هذه الترويسات:</p>
+                  <div class="code-block">title | organization | description | link</div>
+                </div>
+              </li>
+              <li>
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <h4>نشر الـ Sheet كـ API</h4>
+                  <p>في الـ Google Sheet: <code>File → Share → Publish to web</code>، اختر كل الورقات واختر تنسيق <code>CSV</code>، ثم انسخ الرابط وضعه هنا:</p>
+                  <div class="form-group" style="margin-top:8px">
+                    <input type="text" class="form-input" id="sheets-url" placeholder="https://docs.google.com/spreadsheets/d/YOUR_ID/pub?..." style="direction:ltr">
+                  </div>
+                  <button class="btn btn-primary btn-sm" onclick="saveSheetUrl()"><i class="fas fa-link"></i> حفظ الرابط</button>
+                </div>
+              </li>
+              <li>
+                <div class="step-num">5</div>
+                <div class="step-content">
+                  <h4>كود القراءة الديناميكية لموقعك</h4>
+                  <p>أضف هذا الكود في <code>index.html</code> قبل إغلاق الـ <code>&lt;/body&gt;</code>:</p>
+                  <div class="code-block" id="integration-code"><!-- سيظهر بعد إدخال الرابط --></div>
+                  <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="copyIntegration()">
+                    <i class="fas fa-copy"></i> نسخ الكود
+                  </button>
+                </div>
+              </li>
+              <li>
+                <div class="step-num">6</div>
+                <div class="step-content">
+                  <h4>اختبار الربط</h4>
+                  <p>بعد حفظ الكود في موقعك، افتح الموقع وستظهر الفيديوهات والشهادات تلقائياً من Google Sheets. أي تعديل في الـ Sheet يظهر فوراً في الموقع.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Apps Script alternative -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">بديل: استخدام Google Apps Script (أكثر تحكماً)</span>
+          </div>
+          <div class="card-body">
+            <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem">
+              إذا أردت إضافة/حذف بيانات مباشرة من لوحة التحكم هذه إلى Google Sheets، انسخ هذا الكود إلى Apps Script:
+            </p>
+            <div class="code-block">function doPost(e) {
+  var sheet = SpreadsheetApp.openById('YOUR_SHEET_ID');
+  var data = JSON.parse(e.postData.contents);
+  var tab = sheet.getSheetByName(data.sheet);
+  tab.appendRow(data.row);
+  return ContentService.createTextOutput(
+    JSON.stringify({success: true})
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  var sheet = SpreadsheetApp.openById('YOUR_SHEET_ID');
+  var tab = sheet.getSheetByName(e.parameter.sheet);
+  var rows = tab.getDataRange().getValues();
+  return ContentService.createTextOutput(
+    JSON.stringify(rows)
+  ).setMimeType(ContentService.MimeType.JSON);
+}</div>
+            <p style="font-size:0.8rem;color:var(--muted);margin-top:8px">
+              انشر الـ Script كـ Web App مع صلاحية "Anyone" ثم ضع رابطه في الحقل أعلاه.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ========================
+// State
+// ========================
+let state = {
+  videos: [],
+  certificates: [],
+  sections: [
+    { id: 'home', label: 'الرئيسية', visible: true },
+    { id: 'about', label: 'عني', visible: true },
+    { id: 'myVideos', label: 'فيديوهاتي', visible: true },
+    { id: 'myWorks', label: 'أعمالي', visible: true },
+    { id: 'Certificates', label: 'الشهادات', visible: true },
+    { id: 'contact', label: 'اتصل بي', visible: true },
+  ],
+  theme: {
+    navbar: '#2c3e50',
+    primary: '#3498db',
+    bg: '#f9f9f9',
+    text: '#039991',
+    headings: '#2c3e50'
+  },
+  sheetsUrl: ''
+};
+
+function loadState() {
+  const saved = localStorage.getItem('hossam-admin-state');
+  if (saved) {
+    try { state = { ...state, ...JSON.parse(saved) }; } catch(e) {}
+  }
+}
+
+function saveState() {
+  localStorage.setItem('hossam-admin-state', JSON.stringify(state));
+}
+
+// ========================
+// UI Navigation
+// ========================
+const titles = {
+  overview: 'نظرة عامة',
+  videos: 'الفيديوهات',
+  certificates: 'الشهادات',
+  theme: 'الألوان والهوية',
+  sections: 'ترتيب الأقسام',
+  setup: 'إعداد Google Sheets'
+};
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.textContent.includes(titles[id])) n.classList.add('active');
+  });
+  document.getElementById('page-title').textContent = titles[id];
+  if (id === 'sections') renderSections();
+  if (id === 'overview') updateStats();
+  if (id === 'theme') {
+    loadThemeInputs();
+    previewColors();
+  }
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ========================
+// Toast
+// ========================
+function toast(msg, dur = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+// ========================
+// Videos
+// ========================
+function extractVideoId(input) {
+  input = input.trim();
+  const patterns = [
+    /youtu\.be\/([^?&]+)/,
+    /youtube\.com\/watch\?v=([^&]+)/,
+    /youtube\.com\/shorts\/([^?&]+)/,
+    /youtube\.com\/embed\/([^?&]+)/
+  ];
+  for (const p of patterns) {
+    const m = input.match(p);
+    if (m) return m[1];
+  }
+  if (/^[a-zA-Z0-9_-]{8,15}$/.test(input)) return input;
+  return input;
+}
+
+function addVideo() {
+  const title = document.getElementById('v-title').value.trim();
+  const type = document.getElementById('v-type').value;
+  const url = document.getElementById('v-url').value.trim();
+  const desc = document.getElementById('v-desc').value.trim();
+  if (!title || !url) return toast('⚠️ الرجاء إدخال العنوان والرابط');
+  const vid = { id: Date.now(), title, type, videoId: extractVideoId(url), description: desc };
+  state.videos.push(vid);
+  saveState();
+  renderVideos();
+  updateStats();
+  document.getElementById('v-title').value = '';
+  document.getElementById('v-url').value = '';
+  document.getElementById('v-desc').value = '';
+  toast('✅ تم إضافة الفيديو بنجاح');
+}
+
+function deleteVideo(id) {
+  state.videos = state.videos.filter(v => v.id !== id);
+  saveState();
+  renderVideos();
+  updateStats();
+  toast('🗑️ تم حذف الفيديو');
+}
+
+function renderVideos() {
+  const tbody = document.getElementById('videos-tbody');
+  const count = document.getElementById('video-count');
+  count.textContent = state.videos.length + ' فيديو';
+  if (!state.videos.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">لا توجد فيديوهات بعد</td></tr>';
+    return;
+  }
+  tbody.innerHTML = state.videos.map(v => `
+    <tr>
+      <td><strong>${v.title}</strong></td>
+      <td><span class="badge ${v.type === 'short' ? 'badge-red' : 'badge-blue'}">${v.type === 'short' ? 'Shorts' : 'عادي'}</span></td>
+      <td style="direction:ltr;font-size:0.8rem">${v.videoId}</td>
+      <td style="color:var(--muted)">${v.description || '-'}</td>
+      <td><button class="btn btn-danger" onclick="deleteVideo(${v.id})"><i class="fas fa-trash"></i></button></td>
+    </tr>
+  `).join('');
+}
+
+// ========================
+// Certificates
+// ========================
+function addCert() {
+  const title = document.getElementById('c-title').value.trim();
+  const org = document.getElementById('c-org').value.trim();
+  const desc = document.getElementById('c-desc').value.trim();
+  const link = document.getElementById('c-link').value.trim();
+  if (!title) return toast('⚠️ الرجاء إدخال اسم الشهادة');
+  const cert = { id: Date.now(), title, organization: org, description: desc, link };
+  state.certificates.push(cert);
+  saveState();
+  renderCerts();
+  updateStats();
+  ['c-title','c-org','c-desc','c-link'].forEach(id => document.getElementById(id).value = '');
+  toast('✅ تم إضافة الشهادة بنجاح');
+}
+
+function deleteCert(id) {
+  state.certificates = state.certificates.filter(c => c.id !== id);
+  saveState();
+  renderCerts();
+  updateStats();
+  toast('🗑️ تم حذف الشهادة');
+}
+
+function renderCerts() {
+  const tbody = document.getElementById('certs-tbody');
+  const count = document.getElementById('cert-count');
+  count.textContent = state.certificates.length + ' شهادة';
+  if (!state.certificates.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">لا توجد شهادات بعد</td></tr>';
+    return;
+  }
+  tbody.innerHTML = state.certificates.map(c => `
+    <tr>
+      <td><strong>${c.title}</strong></td>
+      <td>${c.organization || '-'}</td>
+      <td style="color:var(--muted);font-size:0.85rem">${c.description ? c.description.substring(0,60) + '...' : '-'}</td>
+      <td>${c.link ? `<a href="${c.link}" target="_blank" style="color:var(--accent)"><i class="fas fa-external-link-alt"></i></a>` : '-'}</td>
+      <td><button class="btn btn-danger" onclick="deleteCert(${c.id})"><i class="fas fa-trash"></i></button></td>
+    </tr>
+  `).join('');
+}
+
+// ========================
+// Stats
+// ========================
+function updateStats() {
+  document.getElementById('stat-videos').textContent = state.videos.length;
+  document.getElementById('stat-certs').textContent = state.certificates.length;
+}
+
+// ========================
+// Theme
+// ========================
+function loadThemeInputs() {
+  if (!state.theme) return;
+  document.getElementById('clr-navbar').value = state.theme.navbar || '#2c3e50';
+  document.getElementById('clr-primary').value = state.theme.primary || '#3498db';
+  document.getElementById('clr-bg').value = state.theme.bg || '#f9f9f9';
+  document.getElementById('clr-text').value = state.theme.text || '#039991';
+  document.getElementById('clr-headings').value = state.theme.headings || '#2c3e50';
+}
+
+function previewColors() {
+  const navbar = document.getElementById('clr-navbar').value;
+  const primary = document.getElementById('clr-primary').value;
+  const bg = document.getElementById('clr-bg').value;
+  const text = document.getElementById('clr-text').value;
+  const headings = document.getElementById('clr-headings').value;
+
+  document.getElementById('prev-navbar').style.background = navbar;
+  document.getElementById('prev-btn').style.background = primary;
+  document.getElementById('prev-text').style.color = text;
+  document.getElementById('color-preview').style.background = bg;
+
+  state.theme = { navbar, primary, bg, text, headings };
+
+  document.getElementById('generated-css').textContent =
+`:root {
+  /* ألوان موقع حسام عبدالجواد */
+}
+
+body { background-color: ${bg}; color: ${text}; }
+.navbar { background-color: ${navbar}; }
+.navbar a:hover, .navbar a.active { background-color: ${primary}; }
+h2, h3 { color: ${headings}; }
+h2::after { background: ${primary}; }
+.certificate-link, .social-links a { background-color: ${primary}; }
+.skills-section { border-right-color: ${primary}; }
+.skills-section h4, .skills-list i { color: ${primary}; }`;
+}
+
+function copyCss() {
+  const code = document.getElementById('generated-css').textContent;
+  navigator.clipboard.writeText(code).then(() => toast('✅ تم نسخ الكود'));
+}
+
+// ========================
+// Sections
+// ========================
+function renderSections() {
+  const list = document.getElementById('sections-list');
+  list.innerHTML = state.sections.map((s, i) => `
+    <div class="section-row" draggable="true" data-i="${i}">
+      <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
+      <span class="name">${s.label}</span>
+      <button class="btn btn-sm ${s.visible ? 'btn-outline' : 'btn-danger'}" onclick="toggleSection(${i})">
+        <i class="fas fa-eye${s.visible ? '' : '-slash'}"></i> ${s.visible ? 'ظاهر' : 'مخفي'}
+      </button>
+    </div>
+  `).join('');
+  generateNavCode();
+  initDrag();
+}
+
+function toggleSection(i) {
+  state.sections[i].visible = !state.sections[i].visible;
+  renderSections();
+}
+
+function saveSections() {
+  saveState();
+  generateNavCode();
+  toast('✅ تم حفظ ترتيب الأقسام');
+}
+
+function generateNavCode() {
+  const links = state.sections
+    .filter(s => s.visible)
+    .map(s => `  <a href="#${s.id}">${s.label}</a>`)
+    .join('\n');
+  document.getElementById('nav-code').textContent =
+`<div class="nav-links" id="nav-links">
+${links}
+</div>`;
+}
+
+function copyNav() {
+  navigator.clipboard.writeText(document.getElementById('nav-code').textContent)
+    .then(() => toast('✅ تم نسخ كود التنقل'));
+}
+
+// Drag and drop
+function initDrag() {
+  const items = document.querySelectorAll('.section-row');
+  let dragSrc = null;
+  items.forEach(item => {
+    item.addEventListener('dragstart', () => { dragSrc = item; item.style.opacity = '0.4'; });
+    item.addEventListener('dragend', () => { item.style.opacity = '1'; });
+    item.addEventListener('dragover', e => { e.preventDefault(); });
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      if (dragSrc !== item) {
+        const a = parseInt(dragSrc.dataset.i);
+        const b = parseInt(item.dataset.i);
+        [state.sections[a], state.sections[b]] = [state.sections[b], state.sections[a]];
+        renderSections();
+      }
+    });
+  });
+}
+
+// ========================
+// Setup / Sheets
+// ========================
+function saveSheetUrl() {
+  const url = document.getElementById('sheets-url').value.trim();
+  state.sheetsUrl = url;
+  saveState();
+  generateIntegrationCode(url);
+  document.getElementById('ds-label').textContent = 'Google Sheets';
+  toast('✅ تم حفظ رابط Google Sheets');
+}
+
+function generateIntegrationCode(url) {
+  const code = url
+    ? `<script>
+// تحميل الفيديوهات من Google Sheets
+async function loadFromSheets() {
+  const SHEET_URL = "${url}";
+  try {
+    // فيديوهات
+    const vRes = await fetch(SHEET_URL + '&gid=0&single=true&output=csv');
+    const vCsv = await vRes.text();
+    const videos = parseCSV(vCsv);
+    renderVideosFromData(videos);
+
+    // شهادات
+    const cRes = await fetch(SHEET_URL + '&gid=1&single=true&output=csv');
+    const cCsv = await cRes.text();
+    const certs = parseCSV(cCsv);
+    renderCertsFromData(certs);
+  } catch(e) { console.error('Sheets error:', e); }
+}
+
+function parseCSV(csv) {
+  const lines = csv.split('\\n').filter(l => l.trim());
+  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g,''));
+  return lines.slice(1).map(line => {
+    const vals = line.split(',').map(v => v.trim().replace(/"/g,''));
+    return Object.fromEntries(headers.map((h,i) => [h, vals[i] || '']));
+  });
+}
+
+function renderVideosFromData(videos) {
+  const container = document.querySelector('.video-container');
+  if (!container || !videos.length) return;
+  container.innerHTML = videos.filter(v => v.type !== 'short').map(v => \`
+    <div class="video-item normal-video" data-aos="fade-up">
+      <iframe src="https://www.youtube.com/embed/\${v.videoId}" loading="lazy" allowfullscreen></iframe>
+      <div class="video-info"><h3>\${v.title}</h3><p>\${v.description}</p></div>
+    </div>\`).join('');
+  const shorts = document.querySelector('.shorts-container');
+  if (shorts) shorts.innerHTML = videos.filter(v => v.type === 'short').map(v => \`
+    <div class="video-item short-video" data-aos="zoom-in">
+      <span class="badge">SHORTS</span>
+      <iframe src="https://www.youtube.com/embed/\${v.videoId}" loading="lazy" allowfullscreen></iframe>
+      <div class="video-info"><h3>\${v.title}</h3><p>\${v.description}</p></div>
+    </div>\`).join('');
+}
+
+function renderCertsFromData(certs) {
+  const container = document.querySelector('.certificate-container');
+  if (!container || !certs.length) return;
+  container.innerHTML = certs.map(c => \`
+    <div class="certificate-box">
+      <h3>\${c.title}</h3>
+      <p><strong>\${c.organization}</strong></p>
+      <p>\${c.description}</p>
+      \${c.link ? \`<a href="\${c.link}" class="certificate-link" target="_blank">عرض الشهادة</a>\` : ''}
+    </div>\`).join('');
+}
+
+document.addEventListener('DOMContentLoaded', loadFromSheets);
+<\/script>`
+    : '/* أدخل رابط Google Sheets أولاً */';
+  document.getElementById('integration-code').textContent = code;
+}
+
+function copyIntegration() {
+  navigator.clipboard.writeText(document.getElementById('integration-code').textContent)
+    .then(() => toast('✅ تم نسخ كود الربط'));
+}
+
+// ========================
+// Save All
+// ========================
+function saveAll() {
+  state.theme = {
+    navbar: document.getElementById('clr-navbar')?.value || state.theme.navbar,
+    primary: document.getElementById('clr-primary')?.value || state.theme.primary,
+    bg: document.getElementById('clr-bg')?.value || state.theme.bg,
+    text: document.getElementById('clr-text')?.value || state.theme.text,
+    headings: document.getElementById('clr-headings')?.value || state.theme.headings
+  };
+  saveState();
+  toast('✅ تم حفظ جميع التغييرات بنجاح');
+}
+
+// ========================
+// Init
+// ========================
+loadState();
+renderVideos();
+renderCerts();
+updateStats();
+if (state.sheetsUrl) {
+  document.getElementById('sheets-url').value = state.sheetsUrl;
+  generateIntegrationCode(state.sheetsUrl);
+  document.getElementById('ds-label').textContent = 'Google Sheets';
+}
+</script>
+</body>
+</html>

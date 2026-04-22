@@ -1,0 +1,102 @@
+// ============================================================
+// كود التحميل الديناميكي من Google Sheets
+// ضعه في index.html قبل </body> مباشرة داخل <script></script>
+// ============================================================
+
+const VIDEOS_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLYokzG3xRZyCcWoEuFEXXCK0KRauo8IosIrL_FNIeXHEGsKUnGiSkDYF0Ra4R9O0uKNiWTtAXOgEm/pub?gid=0&single=true&output=csv";
+const CERTS_URL  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLYokzG3xRZyCcWoEuFEXXCK0KRauo8IosIrL_FNIeXHEGsKUnGiSkDYF0Ra4R9O0uKNiWTtAXOgEm/pub?gid=1460698816&single=true&output=csv";
+
+// --- تحويل CSV إلى مصفوفة من الكائنات ---
+function parseCSV(csv) {
+    const lines = csv.trim().split("\n").filter(l => l.trim());
+    if (lines.length < 2) return [];
+    const headers = lines[0].split(",").map(h => h.trim().replace(/"/g, ""));
+    return lines.slice(1).map(line => {
+        const vals = [];
+        let current = "";
+        let insideQuotes = false;
+        for (let ch of line) {
+            if (ch === '"') { insideQuotes = !insideQuotes; }
+            else if (ch === "," && !insideQuotes) { vals.push(current.trim()); current = ""; }
+            else { current += ch; }
+        }
+        vals.push(current.trim());
+        return Object.fromEntries(headers.map((h, i) => [h, (vals[i] || "").replace(/"/g, "")]));
+    });
+}
+
+// --- تحميل وعرض الفيديوهات ---
+async function loadVideos() {
+    try {
+        const res = await fetch(VIDEOS_URL);
+        const csv = await res.text();
+        const videos = parseCSV(csv);
+
+        const normalVideos = videos.filter(v => v.type !== "short" && v.type !== "Short" && v.type !== "shorts");
+        const shortVideos  = videos.filter(v => v.type === "short" || v.type === "Short" || v.type === "shorts");
+
+        // الفيديوهات العادية
+        const videoContainer = document.querySelector(".video-container");
+        if (videoContainer && normalVideos.length) {
+            videoContainer.innerHTML = normalVideos.map((v, i) => `
+                <div class="video-item normal-video" data-aos="fade-up" data-aos-delay="${100 + i * 50}">
+                    <iframe src="https://www.youtube.com/embed/${v.videoId}"
+                            loading="lazy" allowfullscreen></iframe>
+                    <div class="video-info">
+                        <h3>${v.title}</h3>
+                        <p>${v.description || ""}</p>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        // الفيديوهات القصيرة (Shorts)
+        const shortsContainer = document.querySelector(".shorts-container");
+        if (shortsContainer && shortVideos.length) {
+            shortsContainer.innerHTML = shortVideos.map((v, i) => `
+                <div class="video-item short-video" data-aos="zoom-in" data-aos-delay="${250 + i * 50}">
+                    <span class="badge">SHORTS</span>
+                    <iframe src="https://www.youtube.com/embed/${v.videoId}"
+                            loading="lazy" allowfullscreen></iframe>
+                    <div class="video-info">
+                        <h3>${v.title}</h3>
+                        <p>${v.description || ""}</p>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+    } catch (err) {
+        console.error("خطأ في تحميل الفيديوهات:", err);
+    }
+}
+
+// --- تحميل وعرض الشهادات ---
+async function loadCertificates() {
+    try {
+        const res = await fetch(CERTS_URL);
+        const csv = await res.text();
+        const certs = parseCSV(csv);
+
+        const container = document.querySelector(".certificate-container");
+        if (container && certs.length) {
+            container.innerHTML = certs.map((c, i) => `
+                <div class="certificate-box" data-aos="fade-up" data-aos-delay="${i * 100}">
+                    <h3>${c.title}</h3>
+                    <p><strong>${c.organization || ""}</strong></p>
+                    <p>${c.description || ""}</p>
+                    ${c.link ? `<a href="${c.link}" class="certificate-link" target="_blank" rel="noopener">عرض الشهادة</a>` : ""}
+                </div>
+            `).join("");
+        }
+
+    } catch (err) {
+        console.error("خطأ في تحميل الشهادات:", err);
+    }
+}
+
+// --- تشغيل كل شيء عند تحميل الصفحة ---
+document.addEventListener("DOMContentLoaded", function () {
+    loadVideos();
+    loadCertificates();
+});

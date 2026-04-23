@@ -1,6 +1,5 @@
 // ضع رابط الـ Web App الخاص بك هنا
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhta7z55K4Of2RriPhCtNPT9iYbcicl9tT5w99_mnPqJauA_cQLv1n3wCYwE8WlK00gw/exec';
-
 /**
  * دالة الإرسال الرئيسية إلى Google Sheets
  * @param {string} sheetName - اسم التاب في الشيت (مثلاً: 'Videos' أو 'Orders')
